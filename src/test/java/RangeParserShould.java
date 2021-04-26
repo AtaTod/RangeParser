@@ -18,4 +18,9 @@ public class RangeParserShould {
     void allow_for_single_integer_token() {
         assertArrayEquals(new RangeParser().rangeParser("2"), new int[]{2});
     }
+
+    @Test
+    void allow_for_single_range_token() {
+        assertArrayEquals(new RangeParser().rangeParser("1-10"), new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    }
 }
