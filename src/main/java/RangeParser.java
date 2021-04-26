@@ -10,8 +10,16 @@ public class RangeParser {
 
         List<Integer> output = new ArrayList<>();
 
-        if (tokensInput.matches("\\d"))
+        if (tokensInput.matches("\\d+"))
             output.add(Integer.parseInt(tokensInput));
+
+        if (tokensInput.matches("\\d+-\\d+")) {
+            String[] rangeBounds = tokensInput.split("-");
+
+            for (int i = Integer.parseInt(rangeBounds[0]); i <= Integer.parseInt(rangeBounds[1]); i++) {
+                output.add(i);
+            }
+        }
 
         return output.stream().mapToInt(Integer::intValue).toArray();
     }
