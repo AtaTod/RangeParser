@@ -9,13 +9,13 @@ public class RangeParser {
         List<Integer> output = new ArrayList<>();
         for (String token : tokens) {
             if (token.indexOf(':') != -1) {
-                String[] values = token.split("-|:");
-                for (int i = Integer.valueOf(values[0]); i <= Integer.valueOf(values[1]); i += Integer.valueOf(values[2])) {
+                String[] values = token.split("[-:]");
+                for (int i = Integer.parseInt(values[0]); i <= Integer.parseInt(values[1]); i += Integer.parseInt(values[2])) {
                     output.add(i);
                 }
             } else if (token.indexOf('-') != -1) {
                 String[] values = token.split("-");
-                for (int i = Integer.valueOf(values[0]); i <= Integer.valueOf(values[1]); i++) {
+                for (int i = Integer.parseInt(values[0]); i <= Integer.parseInt(values[1]); i++) {
                     output.add(i);
                 }
             } else {
