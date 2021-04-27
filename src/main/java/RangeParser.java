@@ -41,6 +41,9 @@ public class RangeParser {
                         n -> n + items[increaseFactorIndex]);
                 output = IntStream.concat(output, range);
 
+            } else {
+                output = IntStream.empty();
+                break;
             }
         }
 
