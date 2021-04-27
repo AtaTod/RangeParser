@@ -21,6 +21,14 @@ public class RangeParser {
             }
         }
 
+        if (tokensInput.matches("\\d+-\\d+:\\d+")) {
+            String[] rangeBounds = tokensInput.split("[-:]");
+
+            for (int i = Integer.parseInt(rangeBounds[0]); i <= Integer.parseInt(rangeBounds[1]); i += Integer.parseInt(rangeBounds[2])) {
+                output.add(i);
+            }
+        }
+
         return output.stream().mapToInt(Integer::intValue).toArray();
     }
 }
