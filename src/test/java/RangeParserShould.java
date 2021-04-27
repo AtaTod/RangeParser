@@ -51,4 +51,12 @@ public class RangeParserShould {
 
         assertArrayEquals(expectedOutput, rangeParser.rangeParser(token));
     }
+
+    @Test
+    void allow_fow_multiple_tokens() {
+        int[] expectedOutput = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14, 20, 22, 24};
+        String tokens = "1-10,14, 20-25:2";
+
+        assertArrayEquals(expectedOutput, rangeParser.rangeParser(tokens));
+    }
 }
