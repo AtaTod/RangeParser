@@ -13,30 +13,35 @@ public class RangeParser {
         String rangeWithJumpsPattern = "\\d+-\\d+:\\d+";
         String rangeSeparatorPattern = "-";
         String rangeWithJumpsSeparatorsPattern = "[-:]";
+        String tokenSeparatorsPattern = ", |,";
         int lowerBoundIndex = 0;
         int upperBoundIndex = 1;
         int increaseFactorIndex = 2;
 
         IntStream output = IntStream.empty();
 
-        if (tokensInput.matches(intPattern)) {
-            output = IntStream.concat(output, IntStream.of(Integer.parseInt(tokensInput)));
+        String[] tokens = tokensInput.split(tokenSeparatorsPattern);
 
-        } else if (tokensInput.matches(rangePattern)) {
-            int[] items = Arrays.stream(tokensInput.split(rangeSeparatorPattern))
-                    .mapToInt(Integer::parseInt).toArray();
+        for (String token : tokens) {
+            if (token.matches(intPattern)) {
+                output = IntStream.concat(output, IntStream.of(Integer.parseInt(token)));
 
-            IntStream range = IntStream.range(items[lowerBoundIndex], items[upperBoundIndex]+1);
-            output = IntStream.concat(output, range);
+            } else if (token.matches(rangePattern)) {
+                int[] items = Arrays.stream(token.split(rangeSeparatorPattern))
+                        .mapToInt(Integer::parseInt).toArray();
 
-        } else if (tokensInput.matches(rangeWithJumpsPattern)) {
-            int[] items = Arrays.stream(tokensInput.split(rangeWithJumpsSeparatorsPattern))
-                    .mapToInt(Integer::parseInt).toArray();
+                IntStream range = IntStream.range(items[lowerBoundIndex], items[upperBoundIndex] + 1);
+                output = IntStream.concat(output, range);
 
-            IntStream range = IntStream.iterate(items[lowerBoundIndex], n -> n <= items[upperBoundIndex],
-                    n -> n + items[increaseFactorIndex]);
-            output = IntStream.concat(output, range);
+            } else if (token.matches(rangeWithJumpsPattern)) {
+                int[] items = Arrays.stream(token.split(rangeWithJumpsSeparatorsPattern))
+                        .mapToInt(Integer::parseInt).toArray();
 
+                IntStream range = IntStream.iterate(items[lowerBoundIndex], n -> n <= items[upperBoundIndex],
+                        n -> n + items[increaseFactorIndex]);
+                output = IntStream.concat(output, range);
+
+            }
         }
 
         return output.toArray();
