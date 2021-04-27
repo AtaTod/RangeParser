@@ -1,31 +1,54 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RangeParserShould {
 
+    RangeParser rangeParser;
+
+    @BeforeEach
+    void setUp() {
+        rangeParser = new RangeParser();
+    }
+
     @Test
     void allow_for_null_token() {
-        assertArrayEquals(new RangeParser().rangeParser(null), new int[]{});
+        int[] expectedOutput = {};
+        String token = null;
+
+        assertArrayEquals(expectedOutput, rangeParser.rangeParser(token));
     }
 
     @Test
     void allow_for_empty_token() {
-        assertArrayEquals(new RangeParser().rangeParser(""), new int[]{});
+        int[] expectedOutput = {};
+        String token = "";
+
+        assertArrayEquals(expectedOutput, rangeParser.rangeParser(token));
     }
 
     @Test
     void allow_for_single_integer_token() {
-        assertArrayEquals(new RangeParser().rangeParser("2"), new int[]{2});
+        int[] expectedOutput = {2};
+        String token = "2";
+
+        assertArrayEquals(expectedOutput, rangeParser.rangeParser(token));
     }
 
     @Test
     void allow_for_single_range_token() {
-        assertArrayEquals(new RangeParser().rangeParser("1-10"), new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+        int[] expectedOutput = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        String token = "1-10";
+
+        assertArrayEquals(expectedOutput, rangeParser.rangeParser(token));
     }
 
     @Test
     void allow_for_single_range_each_factor_token() {
-        assertArrayEquals(new RangeParser().rangeParser("1-10:2"), new int[]{1, 3, 5, 7, 9});
+        int[] expectedOutput = {1, 3, 5, 7, 9};
+        String token = "1-10:2";
+
+        assertArrayEquals(expectedOutput, rangeParser.rangeParser(token));
     }
 }
