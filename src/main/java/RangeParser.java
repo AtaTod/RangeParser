@@ -23,28 +23,31 @@ public class RangeParser {
         String[] tokens = tokensInput.split(tokenSeparatorsPattern);
 
         for (String token : tokens) {
+            IntStream values;
+
             if (token.matches(intPattern)) {
-                output = IntStream.concat(output, IntStream.of(Integer.parseInt(token)));
+                values = IntStream.of(Integer.parseInt(token));
+
 
             } else if (token.matches(rangePattern)) {
                 int[] items = Arrays.stream(token.split(rangeSeparatorPattern))
                         .mapToInt(Integer::parseInt).toArray();
 
-                IntStream range = IntStream.range(items[lowerBoundIndex], items[upperBoundIndex] + 1);
-                output = IntStream.concat(output, range);
+                values = IntStream.range(items[lowerBoundIndex], items[upperBoundIndex] + 1);
 
             } else if (token.matches(rangeWithJumpsPattern)) {
                 int[] items = Arrays.stream(token.split(rangeWithJumpsSeparatorsPattern))
                         .mapToInt(Integer::parseInt).toArray();
 
-                IntStream range = IntStream.iterate(items[lowerBoundIndex], n -> n <= items[upperBoundIndex],
+                values = IntStream.iterate(items[lowerBoundIndex], n -> n <= items[upperBoundIndex],
                         n -> n + items[increaseFactorIndex]);
-                output = IntStream.concat(output, range);
 
             } else {
                 output = IntStream.empty();
                 break;
             }
+
+            output = IntStream.concat(output, values);
         }
 
         return output.toArray();
